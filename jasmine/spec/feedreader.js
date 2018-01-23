@@ -26,6 +26,7 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
+        // Check if URL is defined and isn't empty
         it('has URL', function() {
             for (let i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].url).toBeDefined();
@@ -33,6 +34,7 @@ $(function() {
             }
         });
 
+        // Check if name is defined and isn't empty
         it('has name', function() {
             for (let i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].name).toBeDefined();
@@ -41,36 +43,41 @@ $(function() {
         });
     });
 
-
-    /* TODO: Write a new test suite named "The menu" */
     describe('The menu', function() {
 
+        // Check if menu is hidden on default
         it('Is hidden by default', function() {
             expect($("body").hasClass("menu-hidden")).not.toBe(0);
         });
-        
 
+        // Check if menu is shown on click and hidden again by next click.
         it('menu changes on click', function() {
             $(".menu-icon-link").click(),
-                expect($("body").hasClass("menu-hidden")).not.toBe(!0),
+                expect($("body").hasClass("menu-hidden")).not.toBe(!0);
             $(".menu-icon-link").click(),
-                expect($("body").hasClass("menu-hidden")).toBe(!0)
+                expect($("body").hasClass("menu-hidden")).toBe(!0);
         });
     });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
+    describe('Initial Entries', function() {
+        // Check with async function if there is at least one element
+        beforeEach(function(e) {
+            loadFeed(0, e)
+        }),
+        it('entry had at least one element', function() {
+            expect($(".entry").length).not.toBe(0)
+        });
+     });
 
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
+    // Check with async function if elements aren't the same.
+    describe('New Feed Selection', function() {
+        beforeEach(function(e) {
+            loadFeed(0), prevTopPost = $(".entry").eq(0).html(), loadFeed(1, e)
+        }),
+        it("check for changes", function() {
+            expect($(".entry").eq(0).html()).not.toEqual(prevTopPost)
+        })
+    });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
 
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
 }());
