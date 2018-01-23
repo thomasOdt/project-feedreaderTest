@@ -61,22 +61,30 @@ $(function() {
 
     describe('Initial Entries', function() {
         // Check with async function if there is at least one element
-        beforeEach(function(e) {
-            loadFeed(0, e)
-        }),
-        it('entry had at least one element', function() {
-            expect($(".entry").length).not.toBe(0)
+        beforeEach(function(done) {
+            loadFeed(0, done);
+        });
+
+        it('initial element is there', function(){
+            expect($('.feed .entry').length).toBeGreaterThan(0);
         });
      });
 
-    // Check with async function if elements aren't the same.
+
     describe('New Feed Selection', function() {
-        beforeEach(function(e) {
-            loadFeed(0), prevTopPost = $(".entry").eq(0).html(), loadFeed(1, e)
-        }),
-        it("check for changes", function() {
-            expect($(".entry").eq(0).html()).not.toEqual(prevTopPost)
-        })
+        let testfeed;
+
+        // Check with async function if elements aren't the same.
+        beforeEach(function(done) {
+            loadFeed(0, function() {
+                testfeed = $('.feed').html();
+                loadFeed(1, done);
+            });
+        });
+
+        it('has been loaded', function(){
+            expect($('.feed').html()).not.toEqual(testfeed);
+        });
     });
 
 
